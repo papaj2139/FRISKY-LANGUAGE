@@ -3,7 +3,6 @@ i know what youre saying "a scripting language made in python and only in one fi
 
 
 
-Certainly! Here's a sample documentation for the Frisky scripting language that you can paste into your GitHub repository:
 
 # Frisky Scripting Language Documentation
 
@@ -155,6 +154,4 @@ In this example, the `frisky_graphics` module is imported and can be used to acc
 
 ---
 
-This concludes the documentation for the Frisky scripting language. Feel free to customize and expand upon this documentation as needed for your specific project.
 
-Happy scripting with Frisky!
