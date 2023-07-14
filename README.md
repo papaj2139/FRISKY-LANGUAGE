@@ -3,9 +3,11 @@ i know what youre saying "a scripting language made in python and only in one fi
 AND BTW I DONT REALLY KNOW IF IT WORKS WELL I DIDNT REALLY TEST IT
 
 
+
+
 # Frisky Scripting Language Documentation
 
-Frisky is a simple scripting language designed to be easy to read and write. It provides a set of keywords and constructs for performing various operations, including conditional statements, variable manipulation, file and folder management, and basic graphics and audio functionality.
+Frisky is a simple scripting language designed to be easy to read and write. It provides a set of keywords and constructs for performing various operations, including conditional statements, variable manipulation, file and folder management, basic graphics and audio functionality, and more.
 
 ## Table of Contents
 
@@ -17,6 +19,8 @@ Frisky is a simple scripting language designed to be easy to read and write. It 
 - [Graphics and Audio](#graphics-and-audio)
 - [Loops](#loops)
 - [Importing Modules](#importing-modules)
+- [Random Library](#random-library)
+- [Time Library](#time-library)
 
 ## Keywords
 
@@ -127,7 +131,9 @@ In this example, the `screen_create()` function creates a window, `window.update
 
 ## Loops
 
-Frisky includes the `while` keyword for creating while loops. The code block following the `while` statement will be executed repeatedly as long as the specified condition is true. Here's an example:
+Frisky includes the `while` keyword for creating
+
+ while loops. The code block following the `while` statement will be executed repeatedly as long as the specified condition is true. Here's an example:
 
 ```frisky
 setvariable counter = 0
@@ -151,6 +157,45 @@ import graphics
 
 In this example, the `graphics` module is imported and can be used to access its functions and features.
 
----
+## Random Library
 
+Frisky provides a built-in "random" library that allows you to generate random numbers. The random library includes the following functions:
+
+- `random()` - Returns a random float number between 0 and 1.
+- `randint(min, max)` - Returns a random integer between the specified minimum and maximum values (inclusive).
+- `choice(sequence)` - Returns a random element from the given sequence.
+
+Here's an example of using the random library in Frisky:
+
+```frisky
+import random
+
+setvariable random_number = random.randint(1, 100)
+display.to_console(random_number)
+```
+
+In this example, the `randint()` function is used to generate a random integer between 1 and 100 (inclusive). The generated random number is stored in the `random_number` variable, and then it is printed to the console using the `display.to_console()` function.
+
+## Time Library
+
+Frisky provides a built-in "time" library that allows you to work with time-related operations. The time library includes the following functions:
+
+- `time()` - Returns the current time in seconds since the epoch.
+- `sleep(seconds)` - Pauses the execution for the specified number of seconds.
+
+Here's an example of using the time library in Frisky:
+
+```frisky
+import time
+
+setvariable start_time = time.time()
+display.to_console(start_time)
+
+time.sleep(2)
+display.to_console("Two seconds have passed.")
+```
+
+In this example, the `time()` function is used to get the current time in seconds since the epoch. The current time is stored in the `start_time` variable and printed to the console. Then, the `sleep()` function is used to pause the execution for 2 seconds. After the sleep, a message indicating that two seconds have passed is printed to the console.
+
+---
 
