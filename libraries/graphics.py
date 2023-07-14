@@ -74,8 +74,47 @@ def event_get_key():
     event = sdl2.SDL_Event()
     if sdl2.SDL_PollEvent(ctypes.byref(event)) != 0:
         if event.type == sdl2.SDL_KEYDOWN or event.type == sdl2.SDL_KEYUP:
-            return chr(event.key.keysym.sym)
+            key_code = event.key.keysym.sym
+            if key_code == sdl2.SDLK_a:
+                return "a"
+            elif key_code == sdl2.SDLK_b:
+                return "b"
+            elif key_code == sdl2.SDLK_c:
+                return "c"
+            elif key_code == sdl2.SDLK_w:
+                return "w"
+            elif key_code == sdl2.SDLK_s:
+                return "s"
+            elif key_code == sdl2.SDLK_d:
+                return "d"
+            elif key_code == sdl2.SDLK_UP:
+                return "up"
+            elif key_code == sdl2.SDLK_DOWN:
+                return "down"
+            elif key_code == sdl2.SDLK_LEFT:
+                return "left"
+            elif key_code == sdl2.SDLK_RIGHT:
+                return "right"
+            elif key_code == sdl2.SDLK_1:
+                return "1"
+            elif key_code == sdl2.SDLK_2:
+                return "2"
+            elif key_code == sdl2.SDLK_3:
+                return "3"
+            elif key_code == sdl2.SDLK_SPACE:
+                return "space"
+            elif key_code == sdl2.SDLK_RETURN:
+                return "enter"
+            elif key_code == sdl2.SDLK_LSHIFT or key_code == sdl2.SDLK_RSHIFT:
+                return "shift"
+            elif key_code == sdl2.SDLK_LCTRL or key_code == sdl2.SDLK_RCTRL:
+                return "ctrl"
+            elif key_code == sdl2.SDLK_LALT or key_code == sdl2.SDLK_RALT:
+                return "alt"
+            elif key_code == sdl2.SDLK_TAB:
+                return "tab"
     return ""
+
 
 
 def event_get_exit():
