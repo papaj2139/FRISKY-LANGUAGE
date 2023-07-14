@@ -150,7 +150,7 @@ To import a module, use the `import` keyword followed by the module name. Here's
 import graphics
 ```
 
-In this example, the `frisky_graphics` module is imported and can be used to access its functions and features.
+In this example, the `graphics` module is imported and can be used to access its functions and features.
 
 ---
 
