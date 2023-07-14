@@ -33,6 +33,14 @@ class Sound:
         self.sound.play()
 
 
+class Graphics:
+    def __init__(self, window):
+        self.renderer = sdl2.ext.Renderer(window)
+
+    def draw_rect(self, color, rect):
+        sdl2.ext.fill(self.renderer, color, rect)
+
+
 def screen_create(width, height):
     return Screen(width, height)
 
@@ -76,3 +84,23 @@ def event_get_exit():
         if event.type == sdl2.SDL_QUIT:
             return True
     return False
+
+
+def event_get_click_position():
+    event = sdl2.SDL_Event()
+    if sdl2.SDL_PollEvent(ctypes.byref(event)) != 0:
+        if event.type == sdl2.SDL_MOUSEBUTTONDOWN:
+            return event.button.x, event.button.y
+    return None
+
+
+def event_get_touch_position():
+    event = sdl2.SDL_Event()
+    if sdl2.SDL_PollEvent(ctypes.byref(event)) != 0:
+        if event.type == sdl2.SDL_FINGERDOWN:
+            return event.tfinger.x, event.tfinger.y
+    return None
+
+
+def create_graphics(window):
+    return Graphics(window)

@@ -1,145 +1,166 @@
-import importlib.util
 import os
-
-
-
-imported_modules = {}
-
 
 class FriskyInterpreter:
     def __init__(self):
-        self.variables = {}  
+        self.variables = {}
+        self.functions = {}
+        self.classes = {}
 
-    def run(self, code):
-        lines = code.split('\n')
-        index = 0
-        while index < len(lines):
-            line = lines[index]
-            line = self.remove_comments(line)  
-            if line.startswith("if"):
-                condition = line[3:]
-                if condition:
-                    self.interpret_block(lines, index + 1)
-                else:
-                    index = self.find_end_index(lines, index)
-            elif line.startswith("else"):
-                index = self.find_end_index(lines, index)
-            elif line.startswith("ifelse"):
-                condition = line[7:]
-                if condition:
-                    self.interpret_block(lines, index + 1)
-                else:
-                    self.interpret_block(lines, index + 1)
-            elif line.startswith("display.to_console"):
-                content = line.split('(', 1)[1].split(')')[0]
-                if content in self.variables:
-                    print(self.variables[content])
-                else:
-                    print(content)
-            elif line.startswith("setvariable"):
-                parts = line.split('=', 1)
-                variable_name = parts[0][12:].strip()
-                value = parts[1].strip()
-                self.variables[variable_name] = value
-            elif line.startswith("lists"):
-                parts = line.split('=', 1)
-                list_name = parts[0][5:].strip()
-                values = parts[1].strip()
-                self.variables[list_name] = [value.strip() for value in values.split(',')]
-            elif line.startswith("dictionaries"):
-                parts = line.split('=', 1)
-                dict_name = parts[0][12:].strip()
-                entries = parts[1].strip().split(',')
-                dictionary = {}
-                for entry in entries:
-                    key, value = entry.split(':')
-                    dictionary[key.strip()] = value.strip()
-                self.variables[dict_name] = dictionary
-            elif line.startswith("import"):
-                module_name = line[7:].strip()
-                if module_name.endswith(".frisk"):
-                    module_name = module_name[:-6]
-                    imported_modules[module_name] = self.import_module(module_name)
-            elif line.startswith("ask"):
-                parts = line.split('=', 1)
-                variable_name = parts[0][12:].strip()
-                prompt = parts[1].strip()[1:-1]  
-                value = input(prompt)
-                self.variables[variable_name] = value
-                self.interpret_line(f"display.to_console({variable_name})")  
-            elif line.startswith("file.create"):
-                file_path = line[12:].strip()[1:-1]  
-                with open(file_path, "w") as file:
-                    pass
-            elif line.startswith("file.delete"):
-                file_path = line[12:].strip()[1:-1]  
-                if os.path.exists(file_path):
-                    os.remove(file_path)
-            elif line.startswith("folder.create"):
-                folder_path = line[14:].strip()[1:-1]  
-                os.makedirs(folder_path, exist_ok=True)
-            elif line.startswith("folder.delete"):
-                folder_path = line[14:].strip()[1:-1]  
-                if os.path.exists(folder_path):
-                    os.rmdir(folder_path)
-            elif line.startswith("end"):
-                return
-            elif line.startswith("while"):
-                condition = line[6:]
-                while condition:
-                    index += 1
-                    if index < len(lines):
-                        self.interpret_line(lines[index])
-                    else:
-                        break
-            else:
-                self.evaluate_expression(line)
+    def interpret_line(self, line):
+        # Remove leading and trailing whitespace
+        line = line.strip()
 
-            index += 1
+        # Skip empty lines or comments
+        if line == "" or line.startswith("<"):
+            return
 
-    def interpret_block(self, lines, start_index):
-        block_lines = []
-        indent_level = 1
-        index = start_index
-        while index < len(lines) and indent_level > 0:
-            line = lines[index]
-            line = self.remove_comments(line)  
+        # Check for keywords and execute corresponding actions
+        if line.startswith("setvariable"):
+            self.execute_set_variable(line)
+        elif line.startswith("display.to_console"):
+            self.execute_display_to_console(line)
+        elif line.startswith("if"):
+            self.execute_if(line)
+        elif line.startswith("else"):
+            self.execute_else()
+        elif line.startswith("ifelse"):
+            self.execute_if_else(line)
+        elif line.startswith("end"):
+            self.execute_end()
+        elif line.startswith("import"):
+            self.execute_import(line)
+        elif line.startswith("fun"):
+            self.execute_function(line)
+        elif line.startswith("class"):
+            self.execute_class(line)
+        else:
+            print(f"Invalid syntax: {line}")
+
+    def execute_set_variable(self, line):
+        _, expression = line.split("=", 1)
+        expression = expression.strip()
+
+        try:
+            exec(f"result = {expression}", self.variables)
+        except Exception as e:
+            print(f"Error setting variable: {e}")
+            return
+
+        variable_name = line.split()[1]
+        self.variables[variable_name] = self.variables["result"]
+        del self.variables["result"]
+
+    def execute_display_to_console(self, line):
+        _, expression = line.split("(", 1)
+        expression = expression[:-1].strip()
+
+        try:
+            print(eval(expression, self.variables))
+        except Exception as e:
+            print(f"Error displaying to console: {e}")
+
+    def execute_if(self, line):
+        _, condition = line.split(" ", 1)
+
+        try:
+            result = eval(condition, self.variables)
+        except Exception as e:
+            print(f"Error evaluating condition: {e}")
+            return
+
+        if result:
+            self.execute_block()
+
+    def execute_else(self):
+        self.execute_block()
+
+    def execute_if_else(self, line):
+        _, condition = line.split(" ", 1)
+
+        try:
+            result = eval(condition, self.variables)
+        except Exception as e:
+            print(f"Error evaluating condition: {e}")
+            return
+
+        if result:
+            self.execute_block()
+        else:
+            self.execute_block()
+
+    def execute_block(self):
+        indentation = 1
+        while True:
+            line = input()
             if line.startswith("end"):
-                indent_level -= 1
-            elif line.startswith("if") or line.startswith("else") or line.startswith("ifelse"):
-                indent_level += 1
-            block_lines.append(line)
-            index += 1
+                indentation -= 1
+                if indentation == 0:
+                    break
+            if line.endswith(" {"):
+                indentation += 1
 
-        block_code = '\n'.join(block_lines)
-        self.run(block_code)
+            self.interpret_line(line)
 
-    def evaluate_expression(self, expression):
-        if "math" in expression:
-            expression = expression.replace("math", "Math")
-        exec(expression, globals(), self.variables)
+    def execute_end(self):
+        pass
 
-    def import_module(self, module_name):
-        if module_name in imported_modules:
-            return imported_modules[module_name]
+    def execute_import(self, line):
+        _, module = line.split()
+        module = module.strip()
 
-        module_path = os.path.join("libraries", module_name + ".py")
-        spec = importlib.util.spec_from_file_location(module_name, module_path)
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        imported_modules[module_name] = module
-        return module
+        try:
+            exec(f"import {module}", self.variables)
+        except Exception as e:
+            print(f"Error importing module: {e}")
 
-    def remove_comments(self, line):
-        comment_start = line.find("<")
-        comment_end = line.find(">")
-        if comment_start != -1 and comment_end != -1:
-            line = line[:comment_start] + line[comment_end+1:]
-        return line
+    def execute_function(self, line):
+        _, function = line.split()
+        function = function.strip()
+
+        lines = []
+        indentation = 1
+
+        while True:
+            line = input()
+            if line.endswith(" {"):
+                indentation += 1
+            if line.startswith("}"):
+                indentation -= 1
+                if indentation == 0:
+                    break
+            lines.append(line)
+
+        self.functions[function] = lines
+
+    def execute_class(self, line):
+        _, class_name = line.split()
+        class_name = class_name.strip()
+
+        lines = []
+        indentation = 1
+
+        while True:
+            line = input()
+            if line.endswith(" {"):
+                indentation += 1
+            if line.startswith("}"):
+                indentation -= 1
+                if indentation == 0:
+                    break
+            lines.append(line)
+
+        self.classes[class_name] = lines
+
+    def run_file(self, filename):
+        try:
+            with open(filename, "r") as file:
+                for line in file:
+                    self.interpret_line(line)
+        except FileNotFoundError:
+            print(f"File not found: {filename}")
+        except Exception as e:
+            print(f"Error running file: {e}")
 
 
-# Example usage
 interpreter = FriskyInterpreter()
-interpreter.run("""
-
-""")
+interpreter.run_file("script.frisk")
