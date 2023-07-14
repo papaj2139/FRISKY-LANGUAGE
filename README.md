@@ -5,6 +5,7 @@ AND BTW I DONT REALLY KNOW IF IT WORKS WELL I DIDNT REALLY TEST IT
 
 
 
+
 # Frisky Scripting Language Documentation
 
 Frisky is a simple scripting language designed to be easy to read and write. It provides a set of keywords and constructs for performing various operations, including conditional statements, variable manipulation, file and folder management, basic graphics and audio functionality, and more.
@@ -18,9 +19,10 @@ Frisky is a simple scripting language designed to be easy to read and write. It 
 - [File and Folder Management](#file-and-folder-management)
 - [Graphics and Audio](#graphics-and-audio)
 - [Loops](#loops)
+- [Switch Cases](#switch-cases)
+- [Functions](#functions)
+- [Classes](#classes)
 - [Importing Modules](#importing-modules)
-- [Random Library](#random-library)
-- [Time Library](#time-library)
 
 ## Keywords
 
@@ -29,6 +31,13 @@ Frisky includes the following keywords:
 - `if`: Used to create conditional statements.
 - `else`: Used in combination with `if` to create alternative branches in conditional statements.
 - `ifelse`: Used to create conditional statements with two alternative branches.
+- `and`: Used to combine conditions with logical AND.
+- `or`: Used to combine conditions with logical OR.
+- `not`: Used to negate a condition.
+- `return`: Used to return a value from a function.
+- `switch`: Used to start a switch case block.
+- `case`: Used to define a case within a switch case block.
+- `default`: Used to define the default case within a switch case block.
 - `display.to_console()`: Used to print text to the console.
 - `setvariable`: Used to create and assign values to variables.
 - `lists`: Used to create lists (arrays) of values.
@@ -40,7 +49,7 @@ Frisky includes the following keywords:
 - `folder.create()`: Used to create folders.
 - `folder.delete()`: Used to delete folders.
 - `while`: Used to create while loops.
-- `end`: Used to mark the end of blocks, such as if statements, loops, and functions.
+- `end`: Used to mark the end of blocks, such as if statements, loops, functions, and classes.
 
 ## Variables
 
@@ -65,6 +74,8 @@ end
 ```
 
 In this example, the code block inside the `if` statement is executed if the value of `x` is greater than 0. Otherwise, the code block inside the `else` statement is executed.
+
+Frisky also provides logical operators such as `and`, `or`, and `not` to combine and negate conditions.
 
 ## Input and Output
 
@@ -110,9 +121,9 @@ In this example, a folder named "data" is created and then deleted.
 
 ## Graphics and Audio
 
-Frisky supports basic graphics and audio functionality through external modules. To use these features, you can import the `frisky_graphics` module and make use of its functions.
+Frisky supports basic graphics and audio functionality through external modules. To use these features, you can import external Frisky modules or files using the `import` keyword.
 
-Here's an example of creating a window, updating the window, loading an image, and playing a sound:
+Frisky also includes a built-in `graphics` library for graphics-related operations. It provides functions for creating a screen, updating the screen, loading images, and drawing shapes. Here's an example:
 
 ```frisky
 import graphics
@@ -123,17 +134,15 @@ window.update()
 window.load("example.png")
 window.update()
 
-setvariable sound = sound_load("example.wav")
-sound.play()
+graphics.draw_rect(window, (255, 255, 255), (50, 50, 100, 100))
+window.update()
 ```
 
-In this example, the `screen_create()` function creates a window, `window.update()` updates the window display, `window.load()` loads an image onto the window, and `sound_load()` and `sound.play()` load and play a sound, respectively.
+In this example, a window is created, an image is loaded onto the window, and a rectangle is drawn on the window using the `graphics.draw_rect()` function.
 
 ## Loops
 
-Frisky includes the `while` keyword for creating
-
- while loops. The code block following the `while` statement will be executed repeatedly as long as the specified condition is true. Here's an example:
+Frisky includes the `while` keyword for creating while loops. The code block following the `while` statement will be executed repeatedly as long as the specified condition is true. Here's an example:
 
 ```frisky
 setvariable counter = 0
@@ -145,57 +154,72 @@ end
 
 In this example, the code block inside the `while` loop is executed as long as the `counter` variable is less than 5. The value of the `counter` variable is printed to the console, incremented by 1, and the loop continues until the condition is no longer true.
 
+## Switch Cases
+
+Frisky includes support for switch cases, allowing you to perform different actions based on the value of a variable. The `switch` keyword is used to start a switch case block, followed by one or more `case` statements to define specific cases, and an optional `default` statement for the default case. Here's an example:
+
+```frisky
+switch x
+  case 1
+    display.to_console("Case 1")
+  case 2
+    display.to_console("Case 
+
+2")
+  default
+    display.to_console("Default Case")
+end
+```
+
+In this example, the code block inside the corresponding `case` statement is executed based on the value of the variable `x`. If `x` is 1, "Case 1" is displayed. If `x` is 2, "Case 2" is displayed. Otherwise, if none of the cases match, "Default Case" is displayed.
+
+## Functions
+
+Frisky allows you to define and call functions using the `fun` keyword. Functions are defined with a name and a block of code. Here's an example:
+
+```frisky
+fun greet(name)
+  display.to_console("Hello, " + name)
+end
+
+greet("Frisky")
+```
+
+In this example, a function named `greet` is defined with a parameter `name`. The function displays a greeting message with the provided name. The function is then called with the argument "Frisky".
+
+## Classes
+
+Frisky supports object-oriented programming with classes. Classes can be defined using the `class` keyword, followed by the class name and a block of code. Here's an example:
+
+```frisky
+class Person
+  setvariable name
+
+  fun __init__(self, name)
+    self.name = name
+  end
+
+  fun greet(self)
+    display.to_console("Hello, " + self.name)
+  end
+end
+
+setvariable person = Person("Frisky")
+person.greet()
+```
+
+In this example, a class named `Person` is defined with an `__init__` method for initialization and a `greet` method for greeting. An instance of the `Person` class is created with the name "Frisky", and the `greet` method is called on the instance.
+
 ## Importing Modules
 
-Frisky allows you to import external Frisky modules or files using the `import` keyword. The imported modules can provide additional functionality or define reusable code.
-
-To import a module, use the `import` keyword followed by the module name. Here's an example:
+Frisky allows you to import external Frisky modules or files using the `import` keyword. The imported modules can provide additional functionality or define reusable code. Here's an example:
 
 ```frisky
-import graphics
+import mymodule
+
+mymodule.my_function()
 ```
 
-In this example, the `graphics` module is imported and can be used to access its functions and features.
-
-## Random Library
-
-Frisky provides a built-in "random" library that allows you to generate random numbers. The random library includes the following functions:
-
-- `random()` - Returns a random float number between 0 and 1.
-- `randint(min, max)` - Returns a random integer between the specified minimum and maximum values (inclusive).
-- `choice(sequence)` - Returns a random element from the given sequence.
-
-Here's an example of using the random library in Frisky:
-
-```frisky
-import random
-
-setvariable random_number = random.randint(1, 100)
-display.to_console(random_number)
-```
-
-In this example, the `randint()` function is used to generate a random integer between 1 and 100 (inclusive). The generated random number is stored in the `random_number` variable, and then it is printed to the console using the `display.to_console()` function.
-
-## Time Library
-
-Frisky provides a built-in "time" library that allows you to work with time-related operations. The time library includes the following functions:
-
-- `time()` - Returns the current time in seconds since the epoch.
-- `sleep(seconds)` - Pauses the execution for the specified number of seconds.
-
-Here's an example of using the time library in Frisky:
-
-```frisky
-import time
-
-setvariable start_time = time.time()
-display.to_console(start_time)
-
-time.sleep(2)
-display.to_console("Two seconds have passed.")
-```
-
-In this example, the `time()` function is used to get the current time in seconds since the epoch. The current time is stored in the `start_time` variable and printed to the console. Then, the `sleep()` function is used to pause the execution for 2 seconds. After the sleep, a message indicating that two seconds have passed is printed to the console.
+In this example, the `mymodule` module is imported, and the `my_function` function from the module is called.
 
 ---
-
