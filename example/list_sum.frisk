@@ -1,0 +1,8 @@
+setvariable numbers = [1, 2, 3, 4, 5]
+setvariable sum = 0
+
+for number in numbers
+  setvariable sum = sum + number
+end
+
+display.to_console("Sum:", sum)
