@@ -1,0 +1,8 @@
+setvariable file_name = ask("Enter the name of the file: ")
+setvariable content = ask("Enter the content to write to the file: ")
+
+file.create(file_name)
+with open(file_name, "w") as file:
+    file.write(content)
+
+display.to_console("File created and content written successfully.")

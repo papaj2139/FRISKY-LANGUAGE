@@ -1,0 +1,32 @@
+import graphics
+
+setvariable window = screen_create(500, 500)
+window.update()
+
+setvariable x = 0
+setvariable y = 0
+setvariable speed = 5
+
+while True
+  
+    sdl2.ext.fill(window.window.get_surface(), (0, 0, 0))
+
+  
+    sdl2.sdlgfx.rectangleRGBA(window.window.get_surface(), x, y, x + 50, y + 50, 255, 255, 255, 255)
+
+    < Update the window >
+    window.update()
+
+    # Move the rectangle
+    x += speed
+    y += speed
+
+    < Reverse direction when reaching the screen boundaries >
+    if x <= 0 or x >= window.width - 50:
+        speed *= -1
+    if y <= 0 or y >= window.height - 50:
+        speed *= -1
+
+    < Delay for smoother animation >
+    sdl2.SDL_Delay(50)
+end

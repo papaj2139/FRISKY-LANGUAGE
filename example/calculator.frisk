@@ -1,0 +1,7 @@
+setvariable num1 = ask("Enter the first number: ")
+setvariable num2 = ask("Enter the second number: ")
+
+display.to_console("Addition: " + (num1 + num2))
+display.to_console("Subtraction: " + (num1 - num2))
+display.to_console("Multiplication: " + (num1 * num2))
+display.to_console("Division: " + (num1 / num2))
