@@ -112,7 +112,7 @@ Frisky supports basic graphics and audio functionality through external modules.
 Here's an example of creating a window, updating the window, loading an image, and playing a sound:
 
 ```frisky
-import frisky_graphics
+import graphics
 
 setvariable window = screen_create(500, 500)
 window.update()
@@ -147,7 +147,7 @@ Frisky allows you to import external Frisky modules or files using the `import` 
 To import a module, use the `import` keyword followed by the module name. Here's an example:
 
 ```frisky
-import frisky_graphics
+import graphics
 ```
 
 In this example, the `frisky_graphics` module is imported and can be used to access its functions and features.
