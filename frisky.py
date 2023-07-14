@@ -25,6 +25,20 @@ class FriskyInterpreter:
             self.execute_else()
         elif line.startswith("ifelse"):
             self.execute_if_else(line)
+        elif line.startswith("and"):
+            self.execute_and(line)
+        elif line.startswith("or"):
+            self.execute_or(line)
+        elif line.startswith("not"):
+            self.execute_not(line)
+        elif line.startswith("return"):
+            self.execute_return(line)
+        elif line.startswith("switch"):
+            self.execute_switch(line)
+        elif line.startswith("case"):
+            self.execute_case(line)
+        elif line.startswith("default"):
+            self.execute_default()
         elif line.startswith("end"):
             self.execute_end()
         elif line.startswith("import"):
@@ -86,6 +100,82 @@ class FriskyInterpreter:
         if result:
             self.execute_block()
         else:
+            self.execute_block()
+
+    def execute_and(self, line):
+        _, condition = line.split(" ", 1)
+
+        try:
+            result = eval(condition, self.variables)
+        except Exception as e:
+            print(f"Error evaluating condition: {e}")
+            return
+
+        if result:
+            self.execute_block()
+
+    def execute_or(self, line):
+        _, condition = line.split(" ", 1)
+
+        try:
+            result = eval(condition, self.variables)
+        except Exception as e:
+            print(f"Error evaluating condition: {e}")
+            return
+
+        if result:
+            self.execute_block()
+
+    def execute_not(self, line):
+        _, condition = line.split(" ", 1)
+
+        try:
+            result = eval(condition, self.variables)
+        except Exception as e:
+            print(f"Error evaluating condition: {e}")
+            return
+
+        if not result:
+            self.execute_block()
+
+    def execute_return(self, line):
+        _, expression = line.split(" ", 1)
+        expression = expression.strip()
+
+        try:
+            result = eval(expression, self.variables)
+        except Exception as e:
+            print(f"Error evaluating expression: {e}")
+            return
+
+        print(f"Return: {result}")
+
+    def execute_switch(self, line):
+        _, expression = line.split(" ", 1)
+        expression = expression.strip()
+
+        try:
+            self.switch_value = eval(expression, self.variables)
+            self.is_switch_case = False
+        except Exception as e:
+            print(f"Error evaluating switch expression: {e}")
+
+    def execute_case(self, line):
+        _, expression = line.split(" ", 1)
+        expression = expression.strip()
+
+        try:
+            case_value = eval(expression, self.variables)
+        except Exception as e:
+            print(f"Error evaluating case expression: {e}")
+            return
+
+        if self.is_switch_case or self.switch_value == case_value:
+            self.is_switch_case = True
+            self.execute_block()
+
+    def execute_default(self):
+        if not self.is_switch_case:
             self.execute_block()
 
     def execute_block(self):
