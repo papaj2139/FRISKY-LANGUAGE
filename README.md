@@ -6,6 +6,8 @@ AND BTW I DONT REALLY KNOW IF IT WORKS WELL I DIDNT REALLY TEST IT
 
 
 
+Certainly! Here's an updated version of the documentation with added examples and a basic tutorial on how to create libraries:
+
 # Frisky Scripting Language Documentation
 
 Frisky is a simple scripting language designed to be easy to read and write. It provides a set of keywords and constructs for performing various operations, including conditional statements, variable manipulation, file and folder management, basic graphics and audio functionality, and more.
@@ -23,6 +25,7 @@ Frisky is a simple scripting language designed to be easy to read and write. It 
 - [Functions](#functions)
 - [Classes](#classes)
 - [Importing Modules](#importing-modules)
+- [Creating Libraries](#creating-libraries)
 
 ## Keywords
 
@@ -95,9 +98,10 @@ To get user input, Frisky provides the `ask()` function. It takes a prompt as an
 
 ```frisky
 setvariable name = ask("What is your name?")
+display.to_console("Hello, " + name)
 ```
 
-In this example, the user is prompted with the question "What is your name?" and their input is stored in the `name` variable.
+In this example, the user is prompted with the question "What is your name?" and their input is stored in the `name` variable. The greeting message is then displayed.
 
 ## File and Folder Management
 
@@ -126,7 +130,7 @@ Frisky supports basic graphics and audio functionality through external modules.
 Frisky also includes a built-in `graphics` library for graphics-related operations. It provides functions for creating a screen, updating the screen, loading images, and drawing shapes. Here's an example:
 
 ```frisky
-import graphics
+import sdl2
 
 setvariable window = screen_create(500, 500)
 window.update()
@@ -142,7 +146,9 @@ In this example, a window is created, an image is loaded onto the window, and a 
 
 ## Loops
 
-Frisky includes the `while` keyword for creating while loops. The code block following the `while` statement will be executed repeatedly as long as the specified condition is true. Here's an example:
+Frisky includes the `while` keyword for creating while loops. The code block following the `while` statement will be executed repeatedly
+
+ as long as the specified condition is true. Here's an example:
 
 ```frisky
 setvariable counter = 0
@@ -163,9 +169,7 @@ switch x
   case 1
     display.to_console("Case 1")
   case 2
-    display.to_console("Case 
-
-2")
+    display.to_console("Case 2")
   default
     display.to_console("Default Case")
 end
@@ -222,4 +226,52 @@ mymodule.my_function()
 
 In this example, the `mymodule` module is imported, and the `my_function` function from the module is called.
 
+## Creating Libraries
+
+Frisky provides the ability to create libraries for encapsulating reusable code and functionality. Here's a basic tutorial on how to create libraries in Frisky:
+
+1. Start by creating a new Frisky file with the desired name for your library. For example, `mylibrary.frisky`.
+
+2. Define the functions and classes that make up your library. For example:
+
+   ```frisky
+   fun greet(name)
+     display.to_console("Hello, " + name)
+   end
+
+   class Circle
+     setvariable radius
+
+     fun __init__(self, radius)
+       self.radius = radius
+     end
+
+     fun area(self)
+       return 3.14 * self.radius * self.radius
+     end
+   end
+   ```
+
+   In this example, the library includes a function `greet` that displays a greeting message and a class `Circle` that represents a circle with a given radius and provides a method to calculate its area.
+
+3. Save the file `mylibrary.frisky` with your library code.
+
+4. To use your library in another Frisky script, you can import it using the `import` keyword:
+
+   ```frisky
+   import mylibrary
+
+   mylibrary.greet("Frisky")
+   setvariable c = mylibrary.Circle(5)
+   display.to_console("Area: " + c.area())
+   ```
+
+   In this example, the `mylibrary` is imported, and the `greet` function and `Circle` class from the library are used.
+
+5. Save the script file that uses your library and run it using the Frisky interpreter.
+
+By following these steps, you can create and use your own libraries in Frisky to encapsulate and reuse code.
+
 ---
+
+This concludes the documentation for the Frisky scripting language. Use the provided keywords, constructs, and examples to write your own Frisky scripts and libraries. Have fun exploring the possibilities of Frisky!
