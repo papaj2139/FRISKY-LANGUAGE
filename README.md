@@ -1,6 +1,6 @@
 # FRISKY-LANGUAGE
 i know what youre saying "a scripting language made in python and only in one file? it probablt a piece of shit but trust me it is kind of good? i guess
-AND BTW I DONT REALLY KNOW IF IT WORKS WELL I DIDNT REALLY TEST IT
+AND BTW I DONT REALLY KNOW IF IT WORKS WELL I DIDNT REALLY TEST IT AND SOMETIMES WAS TOO LAZY
 
 
 
