@@ -141,10 +141,27 @@ class FriskyInterpreter:
         _, module = line.split()
         module = module.strip()
 
+        if module.endswith(".frisk"):
+            self.import_frisky_library(module)
+        else:
+            self.import_default_library(module)
+
+    def import_frisky_library(self, module):
+        frisky_file = module.replace(".frisk", "") + ".frisk"
+        try:
+            with open(frisky_file, "r") as file:
+                for line in file:
+                    self.interpret_line(line)
+        except FileNotFoundError:
+            print(f"Frisky library not found: {frisky_file}")
+        except Exception as e:
+            print(f"Error importing Frisky library: {e}")
+
+    def import_default_library(self, module):
         try:
             exec(f"import {module}", self.variables)
         except Exception as e:
-            print(f"Error importing module: {e}")
+            print(f"Error importing default library: {e}")
 
     def execute_create_file(self, line):
         _, filename = line.split()
