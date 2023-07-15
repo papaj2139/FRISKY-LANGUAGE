@@ -6,9 +6,6 @@ AND BTW I DONT REALLY KNOW IF IT WORKS WELL I DIDNT REALLY TEST IT
 
 
 
-Certainly! Here's the updated documentation with the `sdl2` module:
-
-```markdown
 # Frisky Scripting Language Documentation
 
 Frisky is a simple scripting language designed to be easy to read and write. It provides a set of keywords and constructs for performing various operations, including conditional statements, variable manipulation, file and folder management, basic graphics and audio functionality, and more.
@@ -64,6 +61,8 @@ Variables in Frisky are dynamically typed and can hold various types of values, 
 ```frisky
 setvariable x = 5
 ```
+
+
 
 In this example, a variable `x` is created and assigned the value of 5.
 
@@ -168,4 +167,79 @@ for i in range(5)
 end
 ```
 
-In this example, the code block inside the `for` loop is executed for each value in the range from 0
+In this example, the code block inside the `for` loop is executed for each value in the range from 0 to 4.
+
+## Switch Cases
+
+Frisky provides the `switch`, `case`, and `default` keywords for creating switch case statements. A switch case statement allows you to compare a value against multiple cases
+
+ and execute different code blocks based on the matched case. Here's an example:
+
+```frisky
+switch x
+  case 1
+    display.to_console("One")
+  case 2
+    display.to_console("Two")
+  default
+    display.to_console("Other")
+end
+```
+
+In this example, the value of `x` is compared against the cases. If `x` is 1, the code block inside the first case is executed. If `x` is 2, the code block inside the second case is executed. If `x` doesn't match any case, the code block inside the `default` case is executed.
+
+## Functions
+
+Frisky allows you to define and call functions using the `fun` keyword. Functions encapsulate a block of code that can be called multiple times with different arguments. Here's an example:
+
+```frisky
+fun greet(name)
+  display.to_console("Hello, " + name + "!")
+end
+
+greet("Alice")
+greet("Bob")
+```
+
+In this example, a function named `greet` is defined with a single parameter `name`. The function displays a personalized greeting based on the provided name. The function is then called twice with different arguments.
+
+## Classes
+
+Frisky supports basic object-oriented programming with classes. Classes are defined using the `class` keyword, and objects are created using the class name followed by parentheses. Here's an example:
+
+```frisky
+class Person
+  setvariable name = ""
+  
+  fun set_name(new_name)
+    setvariable name = new_name
+  end
+  
+  fun display_name()
+    display.to_console("Name: " + name)
+  end
+end
+
+setvariable person = Person()
+person.set_name("Alice")
+person.display_name()
+```
+
+In this example, a class named `Person` is defined with a variable `name` and two functions: `set_name` to set the name and `display_name` to display the name. An object `person` is created from the `Person` class, the name is set to "Alice", and then the name is displayed.
+
+## Importing Modules
+
+Frisky allows you to import external Frisky modules or files using the `import` keyword. Imported modules or files can provide additional functionality or access to external libraries. Here's an example:
+
+```frisky
+import mymodule
+
+mymodule.myfunction()
+```
+
+In this example, a module named `mymodule` is imported, and a function named `myfunction` from that module is called.
+
+Note: This documentation provides a general overview of the Frisky language and its features. For more detailed information and examples, please refer to the official Frisky documentation or tutorials.
+```
+
+You can now copy and paste the updated documentation into your GitHub repository.
