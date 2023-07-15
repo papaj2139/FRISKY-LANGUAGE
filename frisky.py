@@ -52,14 +52,25 @@ class FriskyInterpreter:
             self.execute_or(line)
         elif line.startswith("not"):
             self.execute_not(line)
+        elif line.startswith("range"):
+            self.execute_range(line)
+        elif line.startswith("in"):
+            self.execute_in(line)
+        elif line.startswith("is"):
+            self.execute_is(line)
         elif line.startswith("end"):
             self.execute_end()
         elif line.startswith("fun"):
             self.execute_function(line)
         elif line.startswith("class"):
             self.execute_class(line)
+        elif line.startswith("append"):
+            self.execute_append(line)
+        elif line.startswith("pop"):
+            self.execute_pop(line)
         else:
             print(f"Invalid syntax: {line}")
+
 
     def execute_set_variable(self, line):
         _, expression = line.split("=", 1)
@@ -312,6 +323,41 @@ class FriskyInterpreter:
             self.variables[list_name].append(eval(value, self.variables))
         except Exception as e:
             print(f"Error appending to list: {e}")
+    
+
+    def execute_range(self, line):
+        _, start, stop, step = line.split()
+        start = int(start.strip())
+        stop = int(stop.strip())
+        step = int(step.strip())
+
+        try:
+            result = list(range(start, stop, step))
+            self.variables["_range"] = result
+        except Exception as e:
+            print(f"Error executing range: {e}")
+
+    def execute_in(self, line):
+        _, item, container = line.split()
+        item = item.strip()
+        container = container.strip()
+
+        try:
+            result = eval(item, self.variables) in eval(container, self.variables)
+            self.variables["_in"] = result
+        except Exception as e:
+            print(f"Error executing in: {e}")
+
+    def execute_is(self, line):
+        _, item1, item2 = line.split()
+        item1 = item1.strip()
+        item2 = item2.strip()
+
+        try:
+            result = eval(item1, self.variables) is eval(item2, self.variables)
+            self.variables["_is"] = result
+        except Exception as e:
+            print(f"Error executing is: {e}")
 
     def execute_pop(self, line):
         _, list_name = line.split()
