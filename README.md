@@ -242,4 +242,4 @@ In this example, a module named `mymodule` is imported, and a function named `my
 Note: This documentation provides a general overview of the Frisky language and its features. For more detailed information and examples, please refer to the official Frisky documentation or tutorials.
 ```
 
-You can now copy and paste the updated documentation into your GitHub repository.
+
