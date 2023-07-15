@@ -40,6 +40,10 @@ class FriskyInterpreter:
             self.execute_create_dict(line)
         elif line.startswith("switch"):
             self.execute_switch(line)
+        elif line.startswith("case"):
+            self.execute_case(line)
+        elif line.startswith("default"):
+            self.execute_default()
         elif line.startswith("return"):
             self.execute_return(line)
         elif line.startswith("and"):
@@ -207,6 +211,12 @@ class FriskyInterpreter:
             elif line.startswith("end"):
                 break
 
+    def execute_case(self, line):
+        pass
+
+    def execute_default(self):
+        pass
+
     def execute_return(self, line):
         _, expression = line.split(" ", 1)
         expression = expression.strip()
@@ -292,6 +302,25 @@ class FriskyInterpreter:
             lines.append(line)
 
         self.classes[class_name] = lines
+
+    def execute_append(self, line):
+        _, list_name, value = line.split(" ", 2)
+        list_name = list_name.strip()
+        value = value.strip()
+
+        try:
+            self.variables[list_name].append(eval(value, self.variables))
+        except Exception as e:
+            print(f"Error appending to list: {e}")
+
+    def execute_pop(self, line):
+        _, list_name = line.split()
+        list_name = list_name.strip()
+
+        try:
+            self.variables[list_name].pop()
+        except Exception as e:
+            print(f"Error popping from list: {e}")
 
     def run_file(self, filename):
         try:
