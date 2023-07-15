@@ -158,6 +158,8 @@ class FriskyInterpreter:
             print(f"Error importing Frisky library: {e}")
 
     def import_default_library(self, module):
+        if module.endswith(".py"):
+            module = module.replace(".py", "")
         try:
             exec(f"import {module}", self.variables)
         except Exception as e:
