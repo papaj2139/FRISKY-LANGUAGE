@@ -6,6 +6,7 @@ class FriskyInterpreter:
         self.variables = {}
         self.functions = {}
         self.classes = {}
+        self.modules = {}
 
     def interpret_line(self, line):
         line = line.strip()
@@ -21,8 +22,8 @@ class FriskyInterpreter:
             self.execute_if(line)
         elif line.startswith("else"):
             self.execute_else()
-        elif line.startswith("ifelse"):
-            self.execute_if_else(line)
+        elif line.startswith("elseif"):
+            self.execute_elseif(line)
         elif line.startswith("for"):
             self.execute_for(line)
         elif line.startswith("import"):
@@ -39,6 +40,8 @@ class FriskyInterpreter:
             self.execute_create_list(line)
         elif line.startswith("create_dict"):
             self.execute_create_dict(line)
+        elif line.startswith("create_set"):
+            self.execute_create_set(line)
         elif line.startswith("switch"):
             self.execute_switch(line)
         elif line.startswith("case"):
@@ -107,7 +110,7 @@ class FriskyInterpreter:
     def execute_else(self):
         self.execute_block()
 
-    def execute_if_else(self, line):
+    def execute_elseif(self, line):
         _, condition = line.split(" ", 1)
 
         try:
@@ -117,8 +120,6 @@ class FriskyInterpreter:
             return
 
         if result:
-            self.execute_block()
-        else:
             self.execute_block()
 
     def execute_block(self):
@@ -141,29 +142,29 @@ class FriskyInterpreter:
         _, module = line.split()
         module = module.strip()
 
-        if module.endswith(".frisk"):
-            self.import_frisky_library(module)
+        if "as" in module:
+            module, alias = module.split("as", 1)
+            module = module.strip()
+            alias = alias.strip()
+            self.execute_import_as(module, alias)
         else:
-            self.import_default_library(module)
+            self.execute_import_default(module)
 
-    def import_frisky_library(self, module):
-        frisky_file = module.replace(".frisk", "") + ".frisk"
+    def execute_import_as(self, module, alias):
         try:
-            with open(frisky_file, "r") as file:
-                for line in file:
-                    self.interpret_line(line)
-        except FileNotFoundError:
-            print(f"Frisky library not found: {frisky_file}")
+            module_object = __import__(module, fromlist=[alias])
+            self.modules[alias] = module_object
+            self.variables[alias] = module_object
         except Exception as e:
-            print(f"Error importing Frisky library: {e}")
+            print(f"Error importing module: {e}")
 
-    def import_default_library(self, module):
-        if module.endswith(".py"):
-            module = module.replace(".py", "")
+    def execute_import_default(self, module):
         try:
-            exec(f"import {module}", self.variables)
+            module_object = __import__(module)
+            self.modules[module] = module_object
+            self.variables[module] = module_object
         except Exception as e:
-            print(f"Error importing default library: {e}")
+            print(f"Error importing module: {e}")
 
     def execute_create_file(self, line):
         _, filename = line.split()
@@ -212,6 +213,12 @@ class FriskyInterpreter:
         dict_name = dict_name.strip()
 
         self.variables[dict_name] = {}
+
+    def execute_create_set(self, line):
+        _, set_name = line.split()
+        set_name = set_name.strip()
+
+        self.variables[set_name] = set()
 
     def execute_switch(self, line):
         _, expression = line.split(" ", 1)
