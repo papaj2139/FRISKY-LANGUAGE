@@ -6,6 +6,7 @@ AND BTW I DONT REALLY KNOW IF IT WORKS WELL I DIDNT REALLY TEST IT AND SOMETIMES
 
 
 
+
 # Frisky Scripting Language Documentation
 
 Frisky is a simple scripting language designed to be easy to read and write. It provides a set of keywords and constructs for performing various operations, including variable manipulation, control flow, file and folder management, function definition, and more.
@@ -20,8 +21,9 @@ Frisky is a simple scripting language designed to be easy to read and write. It 
 - [File and Folder Management](#file-and-folder-management)
 - [Functions](#functions)
 - [Classes](#classes)
-- [Importing Libraries](#importing-libraries)
+- [Modules and Libraries](#modules-and-libraries)
 - [Garbage Collection](#garbage-collection)
+- [Error Handling](#error-handling)
 
 ## Introduction
 
@@ -33,23 +35,26 @@ Frisky includes the following keywords:
 
 - `setvariable`: Assigns a value to a variable.
 - `display.to_console`: Displays a value on the console.
-- `if`, `else`, `ifelse`: Conditional statements for control flow.
+- `if`, `else`, `elseif`: Conditional statements for control flow.
 - `for`: Looping construct for iteration.
-- `import`: Imports a Frisky library.
+- `import`: Imports a Frisky library or module.
 - `create_file`, `delete_file`: File management operations.
 - `create_folder`, `delete_folder`: Folder management operations.
-- `create_list`, `create_dict`: Data structure creation.
+- `create_list`, `create_dict`, `create_set`: Data structure creation.
 - `switch`, `case`, `default`: Switch statement for multi-way branching.
 - `return`: Returns a value from a function.
 - `and`, `or`, `not`: Logical operators.
+- `end`: Marks the end of a code block.
 - `fun`: Defines a function.
 - `class`: Defines a class.
 - `gc.collect`: Performs garbage collection.
 - `ask`: Requests user input.
+- `as`: Alias keyword for importing modules.
+- `from`: Selectively imports items from a module.
 
 ## Variables
 
-Variables in Frisky are dynamically typed and can hold various types of values, including numbers, strings, lists, and dictionaries. Variables are created using the `setvariable` keyword followed by the variable name and the assigned value. Here's an example:
+Variables in Frisky are dynamically typed and can hold various types of values, including numbers, strings, lists, dictionaries, and sets. Variables are created using the `setvariable` keyword followed by the variable name and the assigned value. Here's an example:
 
 ```frisky
 setvariable x = 5
@@ -59,31 +64,37 @@ In this example, a variable `x` is created and assigned the value of 5.
 
 ## Control Flow
 
-Frisky provides conditional statements (`if`, `else`, `ifelse`) and looping constructs (`for`) for controlling the flow of execution.
+Frisky provides conditional statements (`if`, `else`, `elseif`) and looping constructs (`for`, `while`) for controlling the flow of execution.
 
 ### Conditional Statements
 
-Frisky supports `if` statements for executing different blocks of code based on certain conditions. The `if` statement is used to define a condition, and the code block following it is executed only if the condition is true. Optionally, an `else` statement can be used to define a code block that is executed when the condition is false. The `ifelse` statement combines both conditions. Here's an example:
+Frisky supports `if` statements for executing different blocks of code based on certain conditions. The `if` statement is used to define a condition, and the code block following it is executed only if the condition is true. Optionally, an `else` statement can be used to define a code block that is executed when the condition is false. The `elseif` statement can be used to define additional conditions. Here's an example:
 
 ```frisky
-if condition
+if condition {
   # code block executed when condition is true
-else
-  # code block executed when condition is false
-end
+} elseif anotherCondition {
+  # code block executed when anotherCondition is true
+} else {
+  # code block executed when no conditions are true
+}
 ```
 
 ### Looping Constructs
 
-Frisky includes the `for` keyword for creating loops. The `for` loop iterates over a range of values or elements in a container. The code block following the `for` statement is executed for each iteration. Here's an example:
+Frisky includes the `for` and `while` keywords for creating loops. The `for` loop iterates over a range of values or elements in a container, and the `while` loop repeatedly executes a code block as long as a condition is true. Here's an example:
 
 ```frisky
-for item in container
+for item in container {
   # code block executed for each item in the container
-end
+}
+
+while condition {
+  # code block executed repeatedly as long as the condition is true
+}
 ```
 
-In this example, the variable `item` takes on each value or element in the `container`, and the code block is executed for each iteration.
+In these examples, the code block is indented and executed for each iteration or as long as the condition is true.
 
 ## Input and Output
 
@@ -158,9 +169,9 @@ In this example, the folder named "data" is deleted.
 Frisky allows you to define and call functions using the `fun` keyword. Functions encapsulate a block of code that can be called multiple times with different arguments. Here's an example:
 
 ```frisky
-fun greet(name)
+fun greet(name) {
   display.to_console("Hello, " + name + "!")
-end
+}
 
 greet("Alice")
 greet("Bob")
@@ -173,17 +184,17 @@ In this example, a function named `greet` is defined with a single parameter `na
 Frisky supports basic object-oriented programming with classes. Classes are defined using the `class` keyword, and objects are created using the class name followed by parentheses. Here's an example:
 
 ```frisky
-class Person
+class Person {
   setvariable name = ""
-  
-  fun set_name(new_name)
+
+  fun set_name(new_name) {
     setvariable name = new_name
-  end
-  
-  fun display_name()
+  }
+
+  fun display_name() {
     display.to_console("Name: " + name)
-  end
-end
+  }
+}
 
 setvariable person = Person()
 person.set_name("Alice")
@@ -192,26 +203,18 @@ person.display_name()
 
 In this example, a class named `Person` is defined with a variable `name` and two functions: `set_name` to set the name and `display_name` to display the name. An object `person` is created from the `Person` class, the name is set to "Alice", and then the name is displayed.
 
-## Importing Libraries
+## Modules and Libraries
 
-Frisky allows you to import Frisky libraries using the `import` keyword. Imported libraries provide additional functionality or access to pre-defined functions and classes. Here's an example:
+Fr
 
-```frisky
-import discord.frisk
-```
-
-In this example, a Frisky library named `discord.frisk` is imported.
-
-To import default Python libraries or Frisky libraries located in the `libraries` folder without specifying the file extension, you can simply use the library name. Here's
-
- an example:
+isky allows you to import modules and libraries using the `import` keyword. Imported modules provide additional functionality or access to pre-defined functions and classes. Here's an example:
 
 ```frisky
-import math
-import mylibrary
+import mymodule.frisk as mymodule
+import datetime from mylibrary
 ```
 
-In this example, the Python `math` library and the Frisky library `mylibrary.frisk` are imported.
+In this example, a Frisky module named `mymodule.frisk` is imported with the alias `mymodule`, and specific items from the `mylibrary` module are imported.
 
 ## Garbage Collection
 
@@ -222,5 +225,22 @@ gc.collect()
 ```
 
 This command triggers the garbage collection process.
+
+## Error Handling
+
+Frisky supports error handling using the `try`, `catch`, and `throw` keywords. The `try` block is used to wrap code that may raise an exception, and the `catch` block is used to handle the raised exception. The `throw` keyword is used to explicitly raise an exception. Here's an example:
+
+```frisky
+try {
+  # code that may raise an exception
+} catch (exception) {
+  # code to handle the exception
+}
+
+# throw an exception
+throw("An error occurred")
+```
+
+In this example, the code inside the `try` block is executed, and if an exception is raised, it is caught and handled in the `catch` block. The `throw` keyword is used to explicitly raise an exception.
 
 Note: This documentation provides a general overview of the Frisky language and its features. For more detailed information and examples, please refer to the official Frisky documentation or tutorials.
